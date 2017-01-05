@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+  <button ion-button (click)='addWeather()'>Add</button>
+    </ion-buttons>
+    <ion-title>
+    Home
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-slides [options]="myslideoptions">
+    <ion-slide>
+      <button ion-item *ngIf="LocalWeather">
+        <ion-thumbnail	item-left>
+          <img src	=	"{{'http://openweathermap.org/img/w/'+LocalWeather.weather[0].icon+'.png'}}"	height=100>
+        </ion-thumbnail>
+        <h2>{{LocalWeather.main.temp}}</h2>
+        <h3>{{LocalWeather.name}}</h3>
+        <p>Low: {{LocalWeather.main.temp_min}} Hight: {{LocalWeather.main.temp_max}}</p>
+      </button>
+      <ion-list>
+        <ion-item ion-item *ngFor="let localforecast of localForecastList">
+          <ion-thumbnail	item-left>
+            <img src="{{'http://openweathermap.org/img/w/'+localforecast.weather[0].icon+'.png'}}">
+          </ion-thumbnail>
+          <h3>{{localforecast.dt*1000	|	date:	'EEEE'}} (H: {{localforecast.temp.max}} L: {{localforecast.temp.min}})</h3>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide *ngFor="let weather of weatherList">
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail	item-left>
+            <img src	=	"{{'http://openweathermap.org/img/w/'+weather.weather[0].icon+'.png'}}"	height=100>
+          </ion-thumbnail>
+          <h2>{{weather.main.temp}}</h2>
+          <h3>{{weather.name}}</h3>
+          <p>Low: {{weather.main.temp_min}} Hight: {{weather.main.temp_max}}</p>
+        </ion-item>
+        <ion-item *ngFor="let forecast of getCurrentForecast(weather)">
+          <ion-thumbnail	item-left>
+            <img src="{{'http://openweathermap.org/img/w/'+forecast.weather[0].icon+'.png'}}">
+          </ion-thumbnail>
+          <h4>{{forecast.dt*1000	|	date:	'EEEE'}} (H: {{forecast.temp.max}} L: {{forecast.temp.min}})</h4>
+        </ion-item>
+      </ion-list>
+      <button ion-button color='danger' (click)="remove(weather)">
+      Remove this weather
+      </button>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
